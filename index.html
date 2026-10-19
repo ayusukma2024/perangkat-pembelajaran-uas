@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Perangkat Pembelajaran Akuntansi - SMK Kelas X</title>
+<style>:root{
+  --bg:#f3f6f5; --card:#fff; --ink:#1d2b29; --muted:#6b7b78; --line:#dfe7e5;
+  --main:#0f766e; --main-d:#0b5a54; --soft:#e0f2ef;
+  --ok:#16a34a; --mid:#f59e0b; --low:#dc2626; --radius:12px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);font-size:15px}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+h1,h2,h3{margin:0}
+code{background:var(--soft);padding:1px 6px;border-radius:6px}
+
+/* tombol & form */
+.btn{background:var(--main);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer;font-size:14px}
+.btn:hover{background:var(--main-d)}
+.btn.ghost{background:transparent;color:var(--main);border:1px solid var(--main)}
+.btn.ghost:hover{background:var(--soft)}
+.btn.danger{background:var(--low)}
+.btn.small{padding:5px 10px;font-size:13px}
+.btn.block{width:100%;margin-top:8px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+label{display:block;font-weight:600;font-size:13px;margin:10px 0}
+input,textarea,select{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;font:inherit;margin-top:4px;background:#fff}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--main);border-color:transparent}
+textarea{min-height:90px;resize:vertical}
+.error{color:var(--low);min-height:20px;font-size:13px}
+
+/* login */
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#0f766e,#134e4a)}
+.login-card{background:#fff;border-radius:16px;padding:32px;width:100%;max-width:420px;box-shadow:0 20px 50px rgba(0,0,0,.25);text-align:center}
+.login-card form{text-align:left}
+.logo{font-size:42px}
+.login-card h1{font-size:20px;margin:6px 0}
+.role-tabs{display:flex;gap:6px;margin:18px 0 4px;background:var(--bg);padding:4px;border-radius:10px}
+.tab{flex:1;border:0;background:transparent;padding:9px;border-radius:8px;font-weight:600;cursor:pointer;color:var(--muted)}
+.tab.active{background:var(--main);color:#fff}
+.demo-box{background:var(--soft);border-radius:10px;padding:12px;font-size:13px;text-align:left;margin-top:6px;display:grid;gap:4px}
+
+/* layout */
+.app{display:flex;min-height:100vh}
+.sidebar{width:250px;background:#134e4a;color:#d7efec;display:flex;flex-direction:column;padding:18px 14px;position:sticky;top:0;height:100vh;flex-shrink:0}
+.brand{font-size:19px;font-weight:700;color:#fff;margin-bottom:14px}
+.who{background:rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;font-size:13px;margin-bottom:12px}
+.who b{display:block;color:#fff}
+.who .role{display:inline-block;margin-top:4px;background:var(--mid);color:#1d2b29;border-radius:99px;padding:1px 9px;font-size:11px;font-weight:700;text-transform:uppercase}
+nav{display:flex;flex-direction:column;gap:3px;overflow:auto;flex:1}
+nav button{background:transparent;border:0;color:#d7efec;text-align:left;padding:10px 12px;border-radius:8px;cursor:pointer;font-size:14px}
+nav button:hover{background:rgba(255,255,255,.1)}
+nav button.active{background:var(--main);color:#fff;font-weight:600}
+.logout{margin-top:10px;color:#fff;border-color:#fff}
+.logout:hover{background:rgba(255,255,255,.12)}
+.main{flex:1;min-width:0}
+.topbar{display:flex;align-items:center;gap:10px;padding:16px 24px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.topbar h2{font-size:18px}
+.burger{display:none;background:transparent;border:0;font-size:22px;cursor:pointer}
+.content{padding:24px;max-width:1100px}
+
+/* komponen */
+.grid{display:grid;gap:16px}
+.grid.stats{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.grid.two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.card h3{font-size:16px;margin-bottom:8px}
+.stat .num{font-size:28px;font-weight:800;color:var(--main)}
+.stat .lab{color:var(--muted);font-size:13px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 14px;flex-wrap:wrap}
+.list{display:grid;gap:12px}
+.item-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.item-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700;background:var(--soft);color:var(--main-d)}
+.badge.ok{background:#dcfce7;color:#166534}
+.badge.mid{background:#fef3c7;color:#92400e}
+.badge.low{background:#fee2e2;color:#991b1b}
+.pre{white-space:pre-wrap;line-height:1.6}
+details summary{cursor:pointer;font-weight:600;color:var(--main)}
+.ann{border-left:4px solid var(--main)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left}
+th{background:var(--soft);font-size:13px;white-space:nowrap}
+.tablewrap{overflow-x:auto}
+td.num{text-align:center;font-weight:600}
+
+/* diagram batang */
+.chart{display:flex;align-items:flex-end;gap:12px;height:230px;padding:10px 4px 0;overflow-x:auto}
+.bar-col{flex:1;min-width:64px;max-width:110px;height:100%;display:flex;flex-direction:column;align-items:center}
+.bar-val{font-size:12px;font-weight:700;margin-bottom:3px}
+.bar-track{flex:1;width:100%;display:flex;align-items:flex-end;background:var(--bg);border-radius:8px 8px 0 0}
+.bar{width:100%;border-radius:8px 8px 0 0;transition:height .4s}
+.bar.ok{background:var(--ok)}.bar.mid{background:var(--mid)}.bar.low{background:var(--low)}
+.bar-lab{font-size:11px;text-align:center;margin-top:6px;height:42px;overflow:hidden;color:var(--muted);line-height:1.25}
+.legend{font-size:12px;color:var(--muted);margin:10px 0 0}
+
+/* kuis */
+.q{margin:14px 0;padding-bottom:10px;border-bottom:1px dashed var(--line)}
+.q .opt{display:flex;gap:8px;align-items:center;font-weight:400;margin:6px 0;padding:8px 10px;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.q .opt input{width:auto;margin:0}
+.q .opt:hover{background:var(--soft)}
+
+/* modal & toast */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:flex-start;justify-content:center;padding:30px 14px;overflow:auto;z-index:50}
+.modal.open{display:flex}
+.modal-box{background:#fff;border-radius:14px;padding:20px;width:100%;max-width:520px}
+.modal-box.wide{max-width:760px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.modal-head .x{border:0;background:transparent;font-size:18px;cursor:pointer}
+.actions{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.hint{font-size:12px;color:var(--muted);font-weight:400}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#134e4a;color:#fff;padding:10px 18px;border-radius:10px;transition:.3s;z-index:99;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+@media(max-width:800px){
+  .sidebar{position:fixed;left:-260px;top:0;z-index:40;transition:left .25s}
+  .sidebar.open{left:0}
+  .burger{display:block}
+  .content{padding:16px}
+}
+
+.role-pick{text-align:left;margin-top:18px}
+.atau{text-align:center;color:var(--muted);font-size:13px;margin:12px 0 2px}
+
+.materi{line-height:1.65}
+.materi h4.mh{margin:16px 0 6px;color:var(--main-d);font-size:15px}
+.materi p{margin:6px 0}
+.materi ul,.materi ol{margin:6px 0;padding-left:22px}
+.materi .callout{background:var(--soft);border-left:4px solid var(--main);border-radius:8px;padding:8px 12px;margin:10px 0}
+.materi pre.mono{background:#f3f6f5;border:1px solid var(--line);border-radius:8px;padding:10px;overflow-x:auto;font-size:13px}
+.materi table{margin:8px 0}
+</style>
+</head>
+<body>
+
+<!-- HALAMAN LOGIN -->
+<section id="login-screen" class="login-screen hidden">
+  <div class="login-card">
+    <div class="logo">📒</div>
+    <h1>Perangkat Pembelajaran Akuntansi</h1>
+    <p class="muted">SMK Kelas X · Akuntansi dan Keuangan Lembaga</p>
+
+    <div class="role-tabs">
+      <button type="button" class="tab active" data-role="siswa">🎓 Siswa</button>
+      <button type="button" class="tab" data-role="guru">👩‍🏫 Guru</button>
+    </div>
+    <form id="login-form" class="role-pick">
+      <label>Nama
+        <input id="login-nama" list="daftar-nama" maxlength="60" required autocomplete="off" placeholder="Ketik nama kamu (bebas)">
+      </label>
+      <datalist id="daftar-nama"></datalist>
+      <button class="btn block">Masuk</button>
+      <p class="hint" style="margin-top:10px">Nama bebas diisi. Nama baru otomatis didaftarkan sebagai siswa.</p>
+    </form>
+  </div>
+</section>
+
+<!-- APLIKASI -->
+<div id="app" class="app hidden">
+  <aside id="sidebar" class="sidebar">
+    <div class="brand">📒 <span>Akuntansi X</span></div>
+    <div class="who" id="who"></div>
+    <nav id="nav"></nav>
+    <button class="btn ghost logout" data-act="logout">Keluar</button>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <button class="burger" data-act="toggle-menu" aria-label="Menu">☰</button>
+      <h2 id="page-title"></h2>
+    </header>
+    <main id="content" class="content"></main>
+  </div>
+</div>
+
+<div id="modal" class="modal"></div>
+<div id="toast" class="toast"></div>
+
+<script>const LS=(()=>{const mem={};const ok=(()=>{try{localStorage.setItem('_t','1');localStorage.removeItem('_t');return true}catch(e){return false}})();
+return{getItem:k=>{try{return ok?localStorage.getItem(k):(k in mem?mem[k]:null)}catch(e){return null}},setItem:(k,v)=>{try{if(ok)localStorage.setItem(k,v);else mem[k]=String(v)}catch(e){mem[k]=String(v)}},removeItem:k=>{try{if(ok)localStorage.removeItem(k);else delete mem[k]}catch(e){delete mem[k]}}}})();
+/* Materi awal (diperluas). Format teks: "## " subjudul, "- " poin, "1. " daftar bernomor,
+   "**tebal**", "> " kotak contoh/tips, baris "| a | b |" tabel, ~~~ blok teks (akun T). */
+window.MATERI_AWAL = [
+{id:'m1', bab:'Bab 1', judul:'Pengertian, Tujuan, dan Pemakai Informasi Akuntansi', link:'', isi:`## Pengertian akuntansi
+Akuntansi adalah proses **mengidentifikasi, mencatat, mengklasifikasi, meringkas, dan melaporkan** transaksi keuangan suatu entitas agar menjadi informasi yang berguna untuk pengambilan keputusan.
+
+## Tujuan akuntansi
+1. Menyediakan informasi keuangan yang andal bagi pihak yang berkepentingan.
+2. Membantu pengambilan keputusan (membeli, berinvestasi, memberi kredit, dsb.).
+3. Menjadi alat pertanggungjawaban pengelolaan keuangan.
+
+## Pemakai informasi akuntansi
+| Pemakai | Kepentingan |
+|---|---|
+| Pemilik | Menilai laba dan perkembangan modal |
+| Manajer | Merencanakan dan mengendalikan usaha |
+| Kreditur/bank | Menilai kemampuan membayar utang |
+| Pemerintah | Dasar penghitungan pajak |
+| Karyawan | Menilai stabilitas usaha dan kesejahteraan |
+
+## Jenis usaha
+- **Jasa**: menjual layanan (salon, bengkel, bimbel).
+- **Dagang**: membeli dan menjual kembali barang (toko, minimarket).
+- **Manufaktur**: mengolah bahan baku menjadi barang jadi (pabrik).
+
+## Etika profesi
+Akuntan wajib bersikap jujur, objektif, teliti, menjaga kerahasiaan data, dan profesional.
+
+> Contoh: Toko Sinar menyimpan catatan penjualan harian. Catatan itu dipakai pemilik untuk melihat untung-rugi dan dipakai bank saat toko mengajukan pinjaman.
+
+## Rangkuman
+Akuntansi adalah bahasa bisnis: mengubah transaksi menjadi informasi keuangan untuk berbagai pemakai.` },
+
+{id:'m2', bab:'Bab 2', judul:'Persamaan Dasar Akuntansi', link:'', isi:`## Rumus
+**Aset = Kewajiban + Modal**
+- **Aset (harta)**: sumber daya milik usaha, misalnya kas, piutang, perlengkapan, peralatan, kendaraan.
+- **Kewajiban (utang)**: kewajiban kepada pihak lain, misalnya utang usaha dan utang bank.
+- **Modal**: hak pemilik atas aset usaha. Modal = Aset - Kewajiban.
+
+## Pengaruh transaksi
+Setiap transaksi mempengaruhi sedikitnya dua unsur, dan persamaan selalu seimbang.
+
+> Contoh 1: Pak Andi menyetor modal tunai Rp10.000.000. Kas (aset) +10.000.000 dan Modal +10.000.000.
+> Contoh 2: Membeli peralatan Rp3.000.000 secara kredit. Peralatan (aset) +3.000.000 dan Utang usaha +3.000.000.
+> Contoh 3: Membeli perlengkapan tunai Rp500.000. Perlengkapan +500.000 dan Kas -500.000 (aset berganti aset).
+
+## Pendapatan dan beban
+- Pendapatan menambah modal. Beban mengurangi modal.
+- Pengambilan pribadi (prive) mengurangi modal.
+
+## Ringkasan pengaruh
+| Transaksi | Aset | Kewajiban | Modal |
+|---|---|---|---|
+| Setor modal | naik | - | naik |
+| Beli kredit | naik | naik | - |
+| Bayar utang | turun | turun | - |
+| Terima pendapatan | naik | - | naik |
+| Bayar beban | turun | - | turun |
+
+## Latihan mandiri
+Aset Rp80.000.000 dan kewajiban Rp30.000.000. Berapa modalnya? (Jawab: Rp50.000.000)` },
+
+{id:'m3', bab:'Bab 3', judul:'Bukti Transaksi', link:'', isi:`## Pengertian
+Bukti transaksi adalah dokumen yang menjadi **dasar pencatatan** dan bukti sah bahwa transaksi benar-benar terjadi.
+
+## Jenis bukti transaksi
+| Bukti | Fungsi |
+|---|---|
+| Faktur (invoice) | Bukti penjualan/pembelian kredit |
+| Kuitansi | Bukti penerimaan uang |
+| Nota | Bukti transaksi tunai skala kecil |
+| Bukti kas masuk (BKM) | Bukti uang masuk ke kas |
+| Bukti kas keluar (BKK) | Bukti uang keluar dari kas |
+| Memo | Bukti transaksi internal, misalnya koreksi |
+| Cek / bukti transfer | Bukti pembayaran lewat bank |
+
+## Syarat bukti yang baik
+- Lengkap (tanggal, nomor, nama pihak, uraian, jumlah).
+- Jelas dan terbaca.
+- Sah (ada tanda tangan atau stempel bila perlu).
+- Diarsipkan rapi menurut urutan nomor/tanggal.
+
+## Alur
+Transaksi terjadi, bukti dibuat, bukti diperiksa, lalu dicatat ke jurnal.
+
+> Tips: Bukti asli menjadi dasar jurnal. Tanpa bukti, pencatatan tidak dapat dipertanggungjawabkan.` },
+
+{id:'m4', bab:'Bab 4', judul:'Akun dan Klasifikasi Akun', link:'', isi:`## Pengertian
+**Akun** adalah tempat mencatat perubahan satu jenis unsur keuangan, misalnya akun Kas atau akun Utang Usaha. Daftar seluruh akun disebut **bagan akun (chart of accounts)**.
+
+## Klasifikasi dan kode akun
+| Kelompok | Kode | Contoh |
+|---|---|---|
+| Aset | 1-xx | Kas, Piutang Usaha, Perlengkapan, Peralatan |
+| Kewajiban | 2-xx | Utang Usaha, Utang Bank |
+| Modal | 3-xx | Modal Pemilik, Prive |
+| Pendapatan | 4-xx | Pendapatan Jasa |
+| Beban | 5-xx | Beban Gaji, Beban Listrik, Beban Sewa |
+
+## Saldo normal
+| Kelompok | Bertambah di | Saldo normal |
+|---|---|---|
+| Aset | Debit | Debit |
+| Beban | Debit | Debit |
+| Prive | Debit | Debit |
+| Kewajiban | Kredit | Kredit |
+| Modal | Kredit | Kredit |
+| Pendapatan | Kredit | Kredit |
+
+## Bentuk akun T
+~~~
+        Kas (1-01)
+ Debit      |     Kredit
+ (kiri)     |     (kanan)
+~~~
+
+> Hafalan: Aset dan Beban bertambah di sisi Debit. Kewajiban, Modal, dan Pendapatan bertambah di sisi Kredit.` },
+
+{id:'m5', bab:'Bab 5', judul:'Jurnal Umum', link:'', isi:`## Pengertian
+Jurnal adalah catatan pertama transaksi, disusun **berurutan menurut tanggal**, berisi akun yang didebit dan dikredit beserta jumlahnya.
+
+## Aturan dasar
+- Jumlah debit selalu sama dengan jumlah kredit.
+- Akun yang didebit ditulis lebih dahulu, akun yang dikredit menjorok ke kanan.
+- Ada keterangan singkat transaksi.
+
+## Langkah membuat jurnal
+1. Baca bukti transaksi.
+2. Tentukan akun yang terpengaruh.
+3. Tentukan golongan akun (aset, kewajiban, modal, dst.).
+4. Tentukan bertambah/berkurang, lalu debit/kredit.
+5. Tulis jurnal dengan jumlah yang sama.
+
+## Contoh
+> 1 Mei: Pak Andi menyetor modal tunai Rp10.000.000.
+> 3 Mei: Membeli perlengkapan tunai Rp500.000.
+> 5 Mei: Menerima pendapatan jasa tunai Rp2.000.000.
+
+| Tanggal | Akun | Debit | Kredit |
+|---|---|---|---|
+| 1 Mei | Kas | 10.000.000 | |
+| | Modal Andi | | 10.000.000 |
+| 3 Mei | Perlengkapan | 500.000 | |
+| | Kas | | 500.000 |
+| 5 Mei | Kas | 2.000.000 | |
+| | Pendapatan Jasa | | 2.000.000 |
+
+## Kesalahan umum
+- Debit dan kredit tidak seimbang.
+- Salah menentukan akun atau tertukar sisi.
+- Tanggal tidak berurutan.` },
+
+{id:'m6', bab:'Bab 6', judul:'Buku Besar dan Posting', link:'', isi:`## Pengertian
+Buku besar adalah kumpulan seluruh akun. **Posting** adalah memindahkan angka dari jurnal ke akun buku besar.
+
+## Langkah posting
+1. Ambil satu baris jurnal.
+2. Catat tanggal dan jumlah di akun yang sama, pada sisi yang sama (debit ke debit, kredit ke kredit).
+3. Beri tanda referensi (nomor halaman jurnal / kode akun).
+4. Hitung saldo akhir tiap akun.
+
+## Contoh (dari jurnal Bab 5)
+~~~
+         Kas                     Modal Andi
+ 1/5  10.000.000 | 3/5  500.000     |  1/5  10.000.000
+ 5/5   2.000.000 |
+ -----------------------
+ Saldo 11.500.000 (debit)
+~~~
+
+Cara menghitung saldo Kas: 10.000.000 + 2.000.000 - 500.000 = 11.500.000.
+
+> Tips: Setelah posting, periksa bahwa total debit seluruh akun sama dengan total kredit seluruh akun.` },
+
+{id:'m7', bab:'Bab 7', judul:'Neraca Saldo', link:'', isi:`## Pengertian
+Neraca saldo adalah daftar **saldo semua akun buku besar** pada akhir periode. Tujuannya menguji keseimbangan: total debit = total kredit.
+
+## Contoh
+| Kode | Nama akun | Debit | Kredit |
+|---|---|---|---|
+| 1-01 | Kas | 11.500.000 | |
+| 1-02 | Perlengkapan | 500.000 | |
+| 3-01 | Modal Andi | | 10.000.000 |
+| 4-01 | Pendapatan Jasa | | 2.000.000 |
+| | **Jumlah** | **12.000.000** | **12.000.000** |
+
+## Bila tidak seimbang
+Periksa kemungkinan berikut:
+- Salah menghitung saldo akun.
+- Angka salah dipindahkan saat posting.
+- Akun ditempatkan di kolom yang salah.
+- Ada jurnal yang tidak seimbang.
+
+> Catatan: Neraca saldo seimbang belum menjamin tidak ada kesalahan. Salah memilih akun dengan jumlah sama tetap tidak terdeteksi.` },
+
+{id:'m8', bab:'Bab 8', judul:'Laporan Keuangan Sederhana', link:'', isi:`## Tiga laporan utama
+1. **Laporan laba rugi**: pendapatan dikurangi beban dalam satu periode.
+2. **Laporan perubahan modal**: perubahan modal awal menjadi modal akhir.
+3. **Laporan posisi keuangan (neraca)**: aset, kewajiban, dan modal pada satu tanggal.
+
+## Rumus
+- Laba/Rugi = Pendapatan - Beban
+- Modal akhir = Modal awal + Laba - Prive
+- Aset = Kewajiban + Modal akhir
+
+## Contoh ringkas
+Pendapatan jasa Rp8.000.000, beban gaji Rp3.000.000, beban listrik Rp500.000, modal awal Rp10.000.000, prive Rp1.000.000.
+
+| Perhitungan | Jumlah |
+|---|---|
+| Total beban | 3.500.000 |
+| Laba bersih (8.000.000 - 3.500.000) | 4.500.000 |
+| Modal akhir (10.000.000 + 4.500.000 - 1.000.000) | 13.500.000 |
+
+> Tips: Susun urut: laba rugi dulu, lalu perubahan modal, terakhir neraca. Setiap laporan memakai hasil laporan sebelumnya.` },
+
+{id:'m9', bab:'Bab 9', judul:'Siklus Akuntansi dan Daftar Istilah', link:'', isi:`## Siklus akuntansi perusahaan jasa
+1. Mengumpulkan bukti transaksi.
+2. Mencatat ke jurnal umum.
+3. Posting ke buku besar.
+4. Menyusun neraca saldo.
+5. Membuat jurnal penyesuaian.
+6. Menyusun laporan keuangan.
+7. Membuat jurnal penutup dan neraca saldo setelah penutupan.
+
+Siklus berulang setiap periode akuntansi (bulanan atau tahunan).
+
+## Daftar istilah penting
+- **Debit**: sisi kiri akun.
+- **Kredit**: sisi kanan akun.
+- **Prive**: pengambilan kas/aset oleh pemilik untuk keperluan pribadi.
+- **Piutang**: tagihan kepada pihak lain.
+- **Beban**: pengorbanan ekonomi untuk memperoleh pendapatan.
+- **Periode akuntansi**: jangka waktu pelaporan keuangan.
+- **KKM**: kriteria ketuntasan minimal pembelajaran.
+
+## Refleksi
+Tuliskan tahapan siklus akuntansi dengan kata-katamu sendiri, lalu kerjakan LKPD dan kuis untuk mengecek pemahamanmu.` }
+];
+
+/* Perangkat Pembelajaran Akuntansi - SMK Kelas X
+   Data disimpan di localStorage browser (tanpa server), cocok untuk GitHub Pages. */
+(() => {
+'use strict';
+
+const KEY = 'pa-akuntansi-db-v2';
+const SKEY = 'pa-akuntansi-sesi';
+const KKM = 75;
+
+/* ---------- util ---------- */
+const uid = () => Math.random().toString(36).slice(2, 9);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = (s, r = document) => r.querySelector(s);
+const today = () => new Date().toISOString().slice(0, 10);
+const fmtTgl = d => d ? new Date(d).toLocaleDateString('id-ID', {day:'numeric', month:'long', year:'numeric'}) : '-';
+const cls = v => v >= KKM ? 'ok' : v >= 60 ? 'mid' : 'low';
+const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
+
+/* ---------- data awal ---------- */
+function seed() {
+  const siswaNama = ['Ahmad Fauzi','Siti Nurhaliza','Budi Santoso','Dewi Lestari','Rizky Pratama'];
+  const users = [{id:'g1', role:'guru', nama:'Sari Wulandari, S.Pd.', username:'guru', password:'guru123', email:'guru@sekolah.sch.id', nip:'198501012010012001', mapel:'Dasar-dasar Akuntansi'}];
+  siswaNama.forEach((n, i) => users.push({
+    id:'s' + (i + 1), role:'siswa', nama:n, nis:String(10001 + i), kelas:'X Akuntansi 1',
+    username: i === 0 ? 'siswa' : 'siswa' + (i + 1), password:'siswa123', email:''
+  }));
+  const d = {
+    users,
+    materi: (window.MATERI_AWAL || []).map(m => ({...m})),
+    lkpd: [
+      {id:'l1', judul:'LKPD 1 - Persamaan Dasar Akuntansi', deskripsi:'Kerjakan secara mandiri. Tuliskan perhitungan dan alasan jawabanmu.', batas:'', soal:[
+        'Jika aset sebuah usaha Rp50.000.000 dan kewajibannya Rp20.000.000, berapa modal pemiliknya? Tuliskan perhitungannya.',
+        'Sebutkan 3 contoh akun yang termasuk aset dan 2 contoh akun yang termasuk kewajiban.',
+        'Pak Andi menyetor modal tunai Rp10.000.000. Jelaskan pengaruhnya terhadap persamaan dasar akuntansi.'
+      ]}
+    ],
+    kuis: [
+      {id:'k1', judul:'Kuis 1 - Persamaan Dasar Akuntansi', durasi:10, soal:[
+        {q:'Persamaan dasar akuntansi yang benar adalah...', opts:['Aset = Kewajiban + Modal','Modal = Aset + Kewajiban','Kewajiban = Aset + Modal','Aset + Modal = Kewajiban'], a:0},
+        {q:'Berikut yang termasuk aset lancar adalah...', opts:['Utang usaha','Kas','Modal pemilik','Utang bank'], a:1},
+        {q:'Pemilik menyetor modal tunai Rp10.000.000. Dampaknya adalah...', opts:['Kas bertambah, utang bertambah','Kas berkurang, modal bertambah','Kas bertambah, modal bertambah','Kas dan modal berkurang'], a:2},
+        {q:'Utang usaha termasuk dalam golongan...', opts:['Aset','Kewajiban','Modal','Pendapatan'], a:1},
+        {q:'Jika aset Rp50.000.000 dan utang Rp20.000.000, maka modal sebesar...', opts:['Rp70.000.000','Rp20.000.000','Rp30.000.000','Rp50.000.000'], a:2}
+      ]}
+    ],
+    pengumuman: [
+      {id:'p1', judul:'Selamat datang di kelas Akuntansi', isi:'Pelajari Bab 1 dan Bab 2 sebelum pertemuan berikutnya, lalu kerjakan LKPD 1 dan Kuis 1.', tgl:today(), penulis:'Sari Wulandari, S.Pd.'}
+    ],
+    jawabanLkpd: [],
+    hasilKuis: []
+  };
+  // contoh nilai agar diagram langsung terisi
+  const contohLkpd = {s1:88, s2:92, s3:70, s4:80};
+  Object.entries(contohLkpd).forEach(([sid, n]) => d.jawabanLkpd.push({id:uid(), lkpdId:'l1', siswaId:sid, jawaban:['Contoh jawaban','Contoh jawaban','Contoh jawaban'], nilai:n, catatan:'', tgl:today()}));
+  const contohKuis = {s1:{n:80,b:4}, s2:{n:100,b:5}, s3:{n:60,b:3}};
+  Object.entries(contohKuis).forEach(([sid, v]) => d.hasilKuis.push({id:uid(), kuisId:'k1', siswaId:sid, nilai:v.n, benar:v.b, total:5, tgl:today()}));
+  LS.setItem(KEY, JSON.stringify(d));
+  return d;
+}
+
+let db = JSON.parse(LS.getItem(KEY) || 'null') || seed();
+const save = () => LS.setItem(KEY, JSON.stringify(db));
+let me = null, page = 'dashboard';
+
+const MENU = {
+  siswa: [['dashboard','Dashboard','🏠'],['materi','Materi','📚'],['lkpd','LKPD','📝'],['kuis','Kuis','❓'],['hasil','Hasil Penilaian','📊'],['pengumuman','Pengumuman','📢'],['profil','Profil','👤']],
+  guru:  [['dashboard','Dashboard','🏠'],['materi','Materi','📚'],['lkpd','LKPD','📝'],['kuis','Kuis','❓'],['penilaian','Penilaian','📊'],['siswa','Data Siswa','🎓'],['pengumuman','Pengumuman','📢'],['profil','Profil','👤']]
+};
+
+/* ---------- UI helper ---------- */
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 2200);
+}
+function closeModal() { $('#modal').classList.remove('open'); $('#modal').innerHTML = ''; }
+function modal(title, body, onSubmit, opt = {}) {
+  const m = $('#modal');
+  m.innerHTML = `<div class="modal-box ${opt.wide ? 'wide' : ''}">
+    <div class="modal-head"><h3>${esc(title)}</h3><button type="button" class="x" data-act="close">✕</button></div>
+    <form id="mform">${body}
+    <div class="actions"><button type="button" class="btn ghost" data-act="close">${opt.noSubmit ? 'Tutup' : 'Batal'}</button>
+    ${opt.noSubmit ? '' : `<button class="btn">${esc(opt.label || 'Simpan')}</button>`}</div></form></div>`;
+  m.classList.add('open');
+  $('#mform').onsubmit = e => {
+    e.preventDefault();
+    if (onSubmit && onSubmit(new FormData(e.target)) === false) return;
+    closeModal();
+  };
+}
+const field = (label, name, val = '', type = 'text', extra = '') =>
+  `<label>${label}<input name="${name}" type="${type}" value="${esc(val)}" ${extra}></label>`;
+const area = (label, name, val = '', hint = '', extra = '') =>
+  `<label>${label}${hint ? `<span class="hint"> ${hint}</span>` : ''}<textarea name="${name}" ${extra}>${esc(val)}</textarea></label>`;
+
+function chart(items) {
+  if (!items.length) return '<p class="muted">Belum ada data nilai untuk ditampilkan.</p>';
+  return `<div class="chart">${items.map(i => `
+    <div class="bar-col"><span class="bar-val">${Math.round(i.value)}</span>
+    <div class="bar-track"><div class="bar ${cls(i.value)}" style="height:${Math.max(2, Math.min(100, i.value))}%"></div></div>
+    <span class="bar-lab" title="${esc(i.label)}">${esc(i.label)}</span></div>`).join('')}</div>
+    <p class="legend">Hijau: ≥ ${KKM} (tuntas) · Kuning: 60-${KKM - 1} · Merah: &lt; 60</p>`;
+}
+const statCard = (num, lab) => `<div class="card stat"><div class="num">${num}</div><div class="lab">${lab}</div></div>`;
+
+/* ---------- format teks materi ---------- */
+function fmt(txt) {
+  const inl = s => s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  let out = '', list = null, tbl = [], box = [], pre = null;
+  const fl = () => { if (list) { out += `</${list}>`; list = null; } };
+  const ft = () => { if (!tbl.length) return; const rows = tbl.filter(r => !/^\|[\s:|-]+\|$/.test(r)).map(r => r.slice(1, -1).split('|').map(c => inl(c.trim())));
+    out += `<div class="tablewrap"><table><tr>${rows[0].map(c => `<th>${c}</th>`).join('')}</tr>${rows.slice(1).map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</table></div>`; tbl = []; };
+  const fb = () => { if (box.length) { out += `<div class="callout">${box.join('<br>')}</div>`; box = []; } };
+  for (const raw of esc(txt).split('\n')) {
+    const l = raw.trimEnd();
+    if (l.trim() === '~~~') { if (pre) { out += `<pre class="mono">${pre.join('\n')}</pre>`; pre = null; } else { fl(); ft(); fb(); pre = []; } continue; }
+    if (pre) { pre.push(l); continue; }
+    if (/^\|.*\|$/.test(l.trim())) { fl(); fb(); tbl.push(l.trim()); continue; }
+    ft();
+    if (/^&gt;\s?/.test(l)) { fl(); box.push(inl(l.replace(/^&gt;\s?/, ''))); continue; }
+    fb();
+    if (/^##\s+/.test(l)) { fl(); out += `<h4 class="mh">${inl(l.replace(/^##\s+/, ''))}</h4>`; }
+    else if (/^-\s+/.test(l)) { if (list !== 'ul') { fl(); out += '<ul>'; list = 'ul'; } out += `<li>${inl(l.replace(/^-\s+/, ''))}</li>`; }
+    else if (/^\d+\.\s+/.test(l)) { if (list !== 'ol') { fl(); out += '<ol>'; list = 'ol'; } out += `<li>${inl(l.replace(/^\d+\.\s+/, ''))}</li>`; }
+    else if (!l.trim()) fl();
+    else { fl(); out += `<p>${inl(l)}</p>`; }
+  }
+  fl(); ft(); fb(); return out;
+}
+
+/* ---------- perhitungan nilai ---------- */
+const siswaList = () => db.users.filter(u => u.role === 'siswa');
+function itemsNilaiSiswa(sid) {
+  const out = [];
+  db.lkpd.forEach(l => { const j = db.jawabanLkpd.find(x => x.lkpdId === l.id && x.siswaId === sid); if (j && j.nilai !== null && j.nilai !== '') out.push({label:'LKPD: ' + l.judul.replace(/^LKPD \d+ - /, ''), value:+j.nilai}); });
+  db.kuis.forEach(k => { const h = db.hasilKuis.find(x => x.kuisId === k.id && x.siswaId === sid); if (h) out.push({label:'Kuis: ' + k.judul.replace(/^Kuis \d+ - /, ''), value:+h.nilai}); });
+  return out;
+}
+function itemsRataKelas() {
+  const out = [];
+  db.lkpd.forEach(l => { const v = db.jawabanLkpd.filter(x => x.lkpdId === l.id && x.nilai !== null && x.nilai !== '').map(x => +x.nilai); if (v.length) out.push({label:'LKPD: ' + l.judul.replace(/^LKPD \d+ - /, ''), value:avg(v)}); });
+  db.kuis.forEach(k => { const v = db.hasilKuis.filter(x => x.kuisId === k.id).map(x => +x.nilai); if (v.length) out.push({label:'Kuis: ' + k.judul.replace(/^Kuis \d+ - /, ''), value:avg(v)}); });
+  return out;
+}
+const nilaiLkpd = (l, sid) => { const j = db.jawabanLkpd.find(x => x.lkpdId === l && x.siswaId === sid); return j && j.nilai !== null && j.nilai !== '' ? +j.nilai : null; };
+const nilaiKuis = (k, sid) => { const h = db.hasilKuis.find(x => x.kuisId === k && x.siswaId === sid); return h ? +h.nilai : null; };
+
+/* ---------- login ---------- */
+function showLogin() {
+  me = null; LS.removeItem(SKEY);
+  setRole(loginRole);
+  $('#app').classList.add('hidden'); $('#login-screen').classList.remove('hidden');
+}
+function showApp() {
+  $('#login-screen').classList.add('hidden'); $('#app').classList.remove('hidden');
+  $('#who').innerHTML = `<b>${esc(me.nama)}</b>${me.role === 'siswa' ? esc(info(me)) : esc(me.mapel || 'Guru')}<br><span class="role">${me.role}</span>`;
+  page = 'dashboard'; render();
+}
+function analisisKelas() {
+  const ss = siswaList().map(s => { const it = itemsNilaiSiswa(s.id); return {nama:s.nama, rata:it.length ? avg(it.map(i => i.value)) : null, rendah:it.filter(i => i.value < KKM).map(i => i.label)}; }).filter(s => s.rata !== null);
+  if (!ss.length) return '';
+  const rk = avg(ss.map(s => s.rata)), tuntas = ss.filter(s => s.rata >= KKM), rem = ss.filter(s => s.rata < KKM || s.rendah.length);
+  const urut = [...ss].sort((a, b) => b.rata - a.rata), atas = urut[0], bawah = urut[urut.length - 1];
+  const soalBlok = db.kuis.map(k => {
+    const hs = db.hasilKuis.filter(h => h.kuisId === k.id && h.jwb);
+    if (!hs.length) return '';
+    const per = k.soal.map((s, i) => ({label:'No. ' + (i + 1), value:hs.filter(h => h.jwb[i] === s.a).length / hs.length * 100}));
+    const sulit = per.filter(p => p.value < 50).map(p => p.label);
+    return `<h4 style="margin:14px 0 4px">${esc(k.judul)}: % siswa menjawab benar per soal</h4>${chart(per)}<p class="muted">${sulit.length ? 'Soal yang perlu dibahas ulang (benar < 50%): ' + sulit.join(', ') : 'Setiap soal dijawab benar oleh minimal setengah siswa.'}</p>`;
+  }).join('');
+  return `<div class="card" style="margin-top:16px"><h3>Analisis Otomatis Kelas</h3>
+  <p>Rata-rata kelas <b>${rk.toFixed(1)}</b>. ${tuntas.length} dari ${ss.length} siswa tuntas (rata-rata ≥ ${KKM}). Tertinggi: <b>${esc(atas.nama)}</b> (${atas.rata.toFixed(1)}); terendah: <b>${esc(bawah.nama)}</b> (${bawah.rata.toFixed(1)}).</p>
+  <h4 style="margin:12px 0 4px">Rata-rata per siswa</h4>${chart(ss.map(s => ({label:s.nama.split(' ')[0], value:s.rata})))}
+  <h4 style="margin:14px 0 4px">Perlu perhatian / remedial</h4>${rem.length ? '<ul>' + rem.map(s => `<li><b>${esc(s.nama)}</b> (rata-rata ${s.rata.toFixed(1)})${s.rendah.length ? ': di bawah KKM pada ' + esc(s.rendah.join(', ')) : ''}</li>`).join('') + '</ul>' : '<p class="muted">Semua siswa tuntas.</p>'}
+  ${soalBlok || '<p class="hint">Diagram per soal kuis muncul setelah siswa mengerjakan kuis (jawaban per soal mulai disimpan).</p>'}</div>`;
+}
+function analisisSiswa(items) {
+  if (!items.length) return '';
+  const saya = avg(items.map(i => i.value)), rk = itemsRataKelas(), kelas = rk.length ? avg(rk.map(i => i.value)) : 0;
+  const rendah = items.filter(i => i.value < KKM), tinggi = [...items].sort((a, b) => b.value - a.value)[0];
+  return `<div class="card" style="margin-top:16px"><h3>Perbandinganku dengan Kelas</h3>${chart([{label:'Nilaiku', value:saya}, {label:'Rata-rata kelas', value:kelas}])}
+  <p>${saya >= kelas ? 'Rata-ratamu di atas atau sama dengan rata-rata kelas.' : 'Rata-ratamu masih di bawah rata-rata kelas, semangat!'} Nilai terbaikmu: <b>${esc(tinggi.label)}</b> (${Math.round(tinggi.value)}).</p>
+  <h4 style="margin:10px 0 4px">Saran belajar</h4>${rendah.length ? '<ul>' + rendah.map(i => `<li>Ulangi materi terkait <b>${esc(i.label)}</b> (nilai ${Math.round(i.value)}, KKM ${KKM}).</li>`).join('') + '</ul>' : '<p>Semua nilaimu sudah tuntas. Pertahankan!</p>'}</div>`;
+}
+const LKEY = 'pa-akuntansi-nama';
+let loginRole = 'siswa';
+const lastNama = () => { try { return JSON.parse(LS.getItem(LKEY) || '{}'); } catch (e) { return {}; } };
+const info = u => (u.nis && u.nis !== '-' ? 'NIS ' + u.nis + ' · ' : '') + (u.kelas || '');
+function setRole(r) {
+  loginRole = r;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.role === r));
+  const g = db.users.find(x => x.role === 'guru');
+  $('#login-nama').value = lastNama()[r] || (r === 'guru' && g ? g.nama : '');
+  $('#login-nama').placeholder = r === 'guru' ? 'Ketik nama guru' : 'Ketik nama kamu (bebas)';
+  $('#daftar-nama').innerHTML = r === 'siswa' ? siswaList().map(s => `<option value="${esc(s.nama)}">`).join('') : '';
+}
+function masuk() {
+  const nama = $('#login-nama').value.replace(/\s+/g, ' ').trim();
+  if (!nama) { toast('Nama belum diisi'); return; }
+  let u;
+  if (loginRole === 'guru') {
+    u = db.users.find(x => x.role === 'guru'); u.nama = nama;
+  } else {
+    u = siswaList().find(s => s.nama.toLowerCase() === nama.toLowerCase());
+    if (!u) {
+      const base = nama.toLowerCase().replace(/[^a-z0-9]+/g, '').slice(0, 20) || 'siswa';
+      let un = base, n = 2; while (db.users.some(x => x.username === un)) un = base + n++;
+      u = {id:uid(), role:'siswa', nama, nis:'-', kelas:'X Akuntansi 1', username:un, password:'', email:''};
+      db.users.push(u);
+    }
+  }
+  save();
+  const l = lastNama(); l[loginRole] = nama; LS.setItem(LKEY, JSON.stringify(l));
+  me = u; LS.setItem(SKEY, u.id); showApp();
+}
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => setRole(t.dataset.role));
+$('#login-form').onsubmit = e => { e.preventDefault(); masuk(); };
+
+/* ---------- render utama ---------- */
+function render() {
+  const menu = MENU[me.role];
+  $('#nav').innerHTML = menu.map(([k, l, ic]) => `<button data-act="nav" data-id="${k}" class="${k === page ? 'active' : ''}">${ic} ${l}</button>`).join('');
+  $('#page-title').textContent = (menu.find(m => m[0] === page) || menu[0])[1];
+  const fn = VIEWS[me.role][page] || VIEWS[me.role].dashboard;
+  $('#content').innerHTML = fn();
+  $('#sidebar').classList.remove('open');
+  window.scrollTo(0, 0);
+}
+
+const annList = (n = 99) => {
+  const a = [...db.pengumuman].sort((x, y) => y.tgl.localeCompare(x.tgl)).slice(0, n);
+  return a.length ? a.map(p => `<div class="card ann"><div class="item-head"><h3>${esc(p.judul)}</h3><span class="muted">${fmtTgl(p.tgl)}</span></div><div class="pre">${esc(p.isi)}</div><div class="muted">— ${esc(p.penulis)}</div>${me.role === 'guru' && n > 5 ? `<div class="item-actions"><button class="btn ghost small" data-act="ann-edit" data-id="${p.id}">Ubah</button><button class="btn danger small" data-act="ann-del" data-id="${p.id}">Hapus</button></div>` : ''}</div>`).join('') : '<p class="muted">Belum ada pengumuman.</p>';
+};
+
+/* ---------- tampilan ---------- */
+const VIEWS = {siswa: {}, guru: {}};
+
+/* === SISWA === */
+VIEWS.siswa.dashboard = () => {
+  const lk = db.jawabanLkpd.filter(j => j.siswaId === me.id).length;
+  const kz = db.hasilKuis.filter(h => h.siswaId === me.id).length;
+  const items = itemsNilaiSiswa(me.id);
+  return `<div class="grid stats">
+    ${statCard(db.materi.length, 'Materi tersedia')}
+    ${statCard(lk + ' / ' + db.lkpd.length, 'LKPD dikumpulkan')}
+    ${statCard(kz + ' / ' + db.kuis.length, 'Kuis diselesaikan')}
+    ${statCard(items.length ? Math.round(avg(items.map(i => i.value))) : '-', 'Rata-rata nilai')}
+  </div>
+  <div class="grid two" style="margin-top:16px">
+    <div class="card"><h3>Perkembangan Nilaiku</h3>${chart(items)}</div>
+    <div><h3 style="margin-bottom:10px">Pengumuman Terbaru</h3><div class="list">${annList(3)}</div></div>
+  </div>`;
+};
+VIEWS.siswa.materi = () => `<div class="list">${db.materi.map(m => `<div class="card"><span class="badge">${esc(m.bab)}</span><h3 style="margin-top:6px">${esc(m.judul)}</h3>
+  <details><summary>Buka materi</summary><div class="materi" style="margin-top:10px">${fmt(m.isi)}</div>${m.link ? `<p><a href="${esc(m.link)}" target="_blank" rel="noopener">🔗 Sumber / video pendukung</a></p>` : ''}</details></div>`).join('') || '<p class="muted">Belum ada materi.</p>'}</div>`;
+VIEWS.siswa.lkpd = () => `<div class="list">${db.lkpd.map(l => {
+  const j = db.jawabanLkpd.find(x => x.lkpdId === l.id && x.siswaId === me.id);
+  const st = !j ? '<span class="badge mid">Belum dikerjakan</span>' : (j.nilai !== null && j.nilai !== '' ? `<span class="badge ${cls(+j.nilai)}">Nilai: ${j.nilai}</span>` : '<span class="badge">Terkirim, menunggu penilaian</span>');
+  return `<div class="card"><div class="item-head"><h3>${esc(l.judul)}</h3>${st}</div><p class="muted">${esc(l.deskripsi)}</p>${l.batas ? `<p class="muted">Batas: ${fmtTgl(l.batas)}</p>` : ''}
+  <div class="item-actions"><button class="btn small" data-act="lkpd-kerjakan" data-id="${l.id}">${j ? 'Lihat / ubah jawaban' : 'Kerjakan'}</button></div></div>`;
+}).join('') || '<p class="muted">Belum ada LKPD.</p>'}</div>`;
+VIEWS.siswa.kuis = () => `<div class="list">${db.kuis.map(k => {
+  const h = db.hasilKuis.find(x => x.kuisId === k.id && x.siswaId === me.id);
+  return `<div class="card"><div class="item-head"><h3>${esc(k.judul)}</h3>${h ? `<span class="badge ${cls(+h.nilai)}">Nilai: ${h.nilai}</span>` : '<span class="badge mid">Belum dikerjakan</span>'}</div>
+  <p class="muted">${k.soal.length} soal · ${k.durasi} menit</p>
+  <div class="item-actions"><button class="btn small" data-act="kuis-mulai" data-id="${k.id}" ${h ? 'disabled' : ''}>${h ? 'Sudah dikerjakan (' + h.benar + '/' + h.total + ' benar)' : 'Mulai kuis'}</button></div></div>`;
+}).join('') || '<p class="muted">Belum ada kuis.</p>'}</div>`;
+VIEWS.siswa.hasil = () => {
+  const items = itemsNilaiSiswa(me.id);
+  const rata = items.length ? avg(items.map(i => i.value)) : null;
+  const rows = db.lkpd.map(l => ({n:'LKPD', j:l.judul, v:nilaiLkpd(l.id, me.id)})).concat(db.kuis.map(k => ({n:'Kuis', j:k.judul, v:nilaiKuis(k.id, me.id)})));
+  return `<div class="card"><h3>Diagram Hasil Penilaian</h3>${chart(items)}</div>${analisisSiswa(items)}
+  <div class="card" style="margin-top:16px"><h3>Rincian Nilai</h3><div class="tablewrap"><table><tr><th>Jenis</th><th>Judul</th><th>Nilai</th><th>Status</th></tr>
+  ${rows.map(r => `<tr><td>${r.n}</td><td>${esc(r.j)}</td><td class="num">${r.v ?? '-'}</td><td>${r.v === null ? '<span class="badge mid">Belum ada nilai</span>' : (r.v >= KKM ? '<span class="badge ok">Tuntas</span>' : '<span class="badge low">Perlu remedial</span>')}</td></tr>`).join('')}
+  <tr><th colspan="2">Rata-rata</th><th class="num">${rata === null ? '-' : rata.toFixed(1)}</th><th></th></tr></table></div></div>`;
+};
+VIEWS.siswa.pengumuman = () => `<div class="list">${annList()}</div>`;
+
+/* === GURU === */
+VIEWS.guru.dashboard = () => {
+  const butuhNilai = db.jawabanLkpd.filter(j => j.nilai === null || j.nilai === '').length;
+  const rk = itemsRataKelas();
+  return `<div class="grid stats">
+    ${statCard(siswaList().length, 'Jumlah siswa')}
+    ${statCard(db.materi.length, 'Materi')}
+    ${statCard(db.lkpd.length + ' / ' + db.kuis.length, 'LKPD / Kuis')}
+    ${statCard(butuhNilai, 'LKPD perlu dinilai')}
+    ${statCard(rk.length ? Math.round(avg(rk.map(i => i.value))) : '-', 'Rata-rata kelas')}
+  </div>
+  <div class="grid two" style="margin-top:16px">
+    <div class="card"><h3>Rata-rata Nilai Kelas</h3>${chart(rk)}</div>
+    <div><h3 style="margin-bottom:10px">Pengumuman Terbaru</h3><div class="list">${annList(3)}</div></div>
+  </div>`;
+};
+VIEWS.guru.materi = () => `<div class="section-head"><h3>Kelola Materi</h3><button class="btn" data-act="materi-add">+ Tambah Materi</button></div>
+  <div class="list">${db.materi.map(m => `<div class="card"><span class="badge">${esc(m.bab)}</span><h3 style="margin-top:6px">${esc(m.judul)}</h3>
+  <details><summary>Lihat isi</summary><div class="materi" style="margin-top:10px">${fmt(m.isi)}</div></details>
+  <div class="item-actions"><button class="btn ghost small" data-act="materi-edit" data-id="${m.id}">Ubah</button><button class="btn danger small" data-act="materi-del" data-id="${m.id}">Hapus</button></div></div>`).join('') || '<p class="muted">Belum ada materi.</p>'}</div>`;
+VIEWS.guru.lkpd = () => `<div class="section-head"><h3>Kelola LKPD</h3><button class="btn" data-act="lkpd-add">+ Tambah LKPD</button></div>
+  <div class="list">${db.lkpd.map(l => {
+    const js = db.jawabanLkpd.filter(j => j.lkpdId === l.id);
+    const belum = js.filter(j => j.nilai === null || j.nilai === '').length;
+    return `<div class="card"><div class="item-head"><h3>${esc(l.judul)}</h3><span class="badge">${js.length} jawaban masuk${belum ? ' · ' + belum + ' belum dinilai' : ''}</span></div>
+    <p class="muted">${esc(l.deskripsi)}</p><p class="muted">${l.soal.length} soal${l.batas ? ' · batas ' + fmtTgl(l.batas) : ''}</p>
+    <div class="item-actions"><button class="btn small" data-act="lkpd-nilai" data-id="${l.id}">Nilai jawaban siswa</button>
+    <button class="btn ghost small" data-act="lkpd-edit" data-id="${l.id}">Ubah</button><button class="btn danger small" data-act="lkpd-del" data-id="${l.id}">Hapus</button></div></div>`;
+  }).join('') || '<p class="muted">Belum ada LKPD.</p>'}</div>`;
+VIEWS.guru.kuis = () => `<div class="section-head"><h3>Kelola Kuis</h3><button class="btn" data-act="kuis-add">+ Tambah Kuis</button></div>
+  <div class="list">${db.kuis.map(k => {
+    const hs = db.hasilKuis.filter(h => h.kuisId === k.id);
+    return `<div class="card"><div class="item-head"><h3>${esc(k.judul)}</h3><span class="badge">${hs.length} siswa mengerjakan${hs.length ? ' · rata-rata ' + avg(hs.map(h => +h.nilai)).toFixed(1) : ''}</span></div>
+    <p class="muted">${k.soal.length} soal · ${k.durasi} menit</p>
+    <div class="item-actions"><button class="btn ghost small" data-act="kuis-edit" data-id="${k.id}">Ubah</button><button class="btn danger small" data-act="kuis-del" data-id="${k.id}">Hapus</button></div></div>`;
+  }).join('') || '<p class="muted">Belum ada kuis.</p>'}</div>`;
+VIEWS.guru.penilaian = () => {
+  const ss = siswaList();
+  const head = db.lkpd.map(l => `<th>LKPD<br><small>${esc(l.judul.replace(/^LKPD \d+ - /, ''))}</small></th>`).join('') + db.kuis.map(k => `<th>Kuis<br><small>${esc(k.judul.replace(/^Kuis \d+ - /, ''))}</small></th>`).join('');
+  const rows = ss.map(s => {
+    const it = itemsNilaiSiswa(s.id);
+    return `<tr><td>${esc(s.nama)}</td>${db.lkpd.map(l => `<td class="num">${nilaiLkpd(l.id, s.id) ?? '-'}</td>`).join('')}${db.kuis.map(k => `<td class="num">${nilaiKuis(k.id, s.id) ?? '-'}</td>`).join('')}<td class="num">${it.length ? avg(it.map(i => i.value)).toFixed(1) : '-'}</td></tr>`;
+  }).join('');
+  return `<div class="card"><div class="section-head"><h3>Diagram Rata-rata Nilai Kelas</h3><button class="btn ghost small" data-act="export-csv">⬇ Unduh rekap (CSV)</button></div>${chart(itemsRataKelas())}</div>
+  <div class="card" style="margin-top:16px"><h3>Rekap Nilai Siswa</h3><div class="tablewrap"><table><tr><th>Nama</th>${head}<th>Rata-rata</th></tr>${rows || '<tr><td colspan="9" class="muted">Belum ada data siswa.</td></tr>'}</table></div>
+  <p class="hint">Nilai LKPD diisi lewat menu LKPD → "Nilai jawaban siswa". Nilai kuis dihitung otomatis.</p></div>${analisisKelas()}`;
+};
+VIEWS.guru.siswa = () => `<div class="section-head"><h3>Data Siswa (${siswaList().length})</h3><button class="btn" data-act="siswa-add">+ Tambah Siswa</button></div>
+  <div class="card"><div class="tablewrap"><table><tr><th>NIS</th><th>Nama</th><th>Kelas</th><th>Username</th><th>Rata-rata</th><th></th></tr>
+  ${siswaList().map(s => { const it = itemsNilaiSiswa(s.id); return `<tr><td>${esc(s.nis)}</td><td>${esc(s.nama)}</td><td>${esc(s.kelas)}</td><td>${esc(s.username)}</td><td class="num">${it.length ? avg(it.map(i => i.value)).toFixed(1) : '-'}</td>
+  <td><button class="btn ghost small" data-act="siswa-edit" data-id="${s.id}">Ubah</button> <button class="btn danger small" data-act="siswa-del" data-id="${s.id}">Hapus</button></td></tr>`; }).join('') || '<tr><td colspan="6" class="muted">Belum ada siswa.</td></tr>'}</table></div></div>`;
+VIEWS.guru.pengumuman = () => `<div class="section-head"><h3>Pengumuman</h3><button class="btn" data-act="ann-add">+ Buat Pengumuman</button></div><div class="list">${annList()}</div>`;
+
+/* === PROFIL (kedua peran) === */
+const profil = () => `<div class="card" style="max-width:560px"><h3>${esc(me.nama)}</h3>
+  <p class="muted">${me.role === 'siswa' ? 'Siswa · ' + esc(info(me)) : 'Guru · ' + esc(me.mapel || '') + (me.nip ? ' · NIP ' + esc(me.nip) : '')}</p>
+  <p>Username: <code>${esc(me.username)}</code></p>
+  <div class="item-actions"><button class="btn" data-act="profil-edit">Ubah profil & password</button></div></div>`;
+VIEWS.siswa.profil = profil; VIEWS.guru.profil = profil;
+
+/* ---------- aksi ---------- */
+const parseKuis = txt => txt.split('\n').map(l => l.trim()).filter(Boolean).map(l => {
+  const p = l.split('|').map(x => x.trim());
+  const a = 'ABCD'.indexOf((p[5] || 'A').toUpperCase());
+  return {q:p[0], opts:p.slice(1, 5), a:a < 0 ? 0 : a};
+}).filter(s => s.q && s.opts.filter(Boolean).length >= 2);
+const kuisToText = soal => soal.map(s => [s.q, ...s.opts, 'ABCD'[s.a]].join(' | ')).join('\n');
+
+const ACT = {
+  nav: id => { page = id; render(); },
+  logout: () => showLogin(),
+  close: closeModal,
+  'toggle-menu': () => $('#sidebar').classList.toggle('open'),
+
+  /* materi */
+  'materi-add': () => ACT['materi-edit'](null),
+  'materi-edit': id => {
+    const m = db.materi.find(x => x.id === id) || {};
+    modal(id ? 'Ubah Materi' : 'Tambah Materi',
+      field('Bab', 'bab', m.bab || '', 'text', 'required placeholder="Contoh: Bab 4"') + field('Judul', 'judul', m.judul || '', 'text', 'required') +
+      area('Isi materi', 'isi', m.isi || '', '(## subjudul, - poin, 1. nomor, **tebal**, > kotak contoh, | tabel |)', 'required rows="12"') + field('Link sumber / video (opsional)', 'link', m.link || '', 'url', 'placeholder="https://..."'),
+      fd => {
+        const o = {bab:fd.get('bab'), judul:fd.get('judul'), isi:fd.get('isi'), link:fd.get('link')};
+        if (id) Object.assign(m, o); else db.materi.push({id:uid(), ...o});
+        save(); render(); toast('Materi disimpan');
+      }, {wide:true});
+  },
+  'materi-del': id => { if (confirm('Hapus materi ini?')) { db.materi = db.materi.filter(x => x.id !== id); save(); render(); } },
+
+  /* LKPD */
+  'lkpd-add': () => ACT['lkpd-edit'](null),
+  'lkpd-edit': id => {
+    const l = db.lkpd.find(x => x.id === id) || {};
+    modal(id ? 'Ubah LKPD' : 'Tambah LKPD',
+      field('Judul', 'judul', l.judul || '', 'text', 'required placeholder="LKPD 2 - Jenis Akun"') + area('Petunjuk / deskripsi', 'deskripsi', l.deskripsi || '') +
+      field('Batas pengumpulan (opsional)', 'batas', l.batas || '', 'date') + area('Soal / tugas', 'soal', (l.soal || []).join('\n'), '(satu soal per baris)', 'required rows="6"'),
+      fd => {
+        const o = {judul:fd.get('judul'), deskripsi:fd.get('deskripsi'), batas:fd.get('batas'), soal:fd.get('soal').split('\n').map(s => s.trim()).filter(Boolean)};
+        if (id) Object.assign(l, o); else db.lkpd.push({id:uid(), ...o});
+        save(); render(); toast('LKPD disimpan');
+      }, {wide:true});
+  },
+  'lkpd-del': id => { if (confirm('Hapus LKPD beserta jawaban siswa?')) { db.lkpd = db.lkpd.filter(x => x.id !== id); db.jawabanLkpd = db.jawabanLkpd.filter(j => j.lkpdId !== id); save(); render(); } },
+  'lkpd-kerjakan': id => {
+    const l = db.lkpd.find(x => x.id === id);
+    const j = db.jawabanLkpd.find(x => x.lkpdId === id && x.siswaId === me.id);
+    const dinilai = j && j.nilai !== null && j.nilai !== '';
+    modal(l.judul,
+      `<p class="muted">${esc(l.deskripsi)}</p>` +
+      l.soal.map((s, i) => `<label>${i + 1}. ${esc(s)}<textarea name="j${i}" ${dinilai ? 'readonly' : ''} required>${esc(j ? j.jawaban[i] : '')}</textarea></label>`).join('') +
+      (dinilai ? `<p><span class="badge ${cls(+j.nilai)}">Nilai: ${j.nilai}</span> ${j.catatan ? '<br>Catatan guru: ' + esc(j.catatan) : ''}</p>` : ''),
+      fd => {
+        if (dinilai) return true;
+        const jawaban = l.soal.map((_, i) => fd.get('j' + i));
+        if (j) { j.jawaban = jawaban; j.tgl = today(); } else db.jawabanLkpd.push({id:uid(), lkpdId:id, siswaId:me.id, jawaban, nilai:null, catatan:'', tgl:today()});
+        save(); render(); toast('Jawaban terkirim');
+      }, {wide:true, label:'Kirim jawaban', noSubmit:dinilai});
+  },
+  'lkpd-nilai': id => {
+    const l = db.lkpd.find(x => x.id === id);
+    const js = db.jawabanLkpd.filter(j => j.lkpdId === id);
+    if (!js.length) { toast('Belum ada jawaban masuk'); return; }
+    modal('Penilaian: ' + l.judul, js.map(j => {
+      const s = db.users.find(u => u.id === j.siswaId);
+      return `<div class="card" style="margin:10px 0"><b>${esc(s ? s.nama : 'Siswa dihapus')}</b> <span class="muted">· ${fmtTgl(j.tgl)}</span>
+      ${l.soal.map((q, i) => `<div style="margin-top:8px"><div class="muted">${i + 1}. ${esc(q)}</div><div class="pre">${esc(j.jawaban[i] || '-')}</div></div>`).join('')}
+      <div class="grid two" style="gap:10px">${field('Nilai (0-100)', 'n_' + j.id, j.nilai ?? '', 'number', 'min="0" max="100"')}${field('Catatan', 'c_' + j.id, j.catatan || '')}</div></div>`;
+    }).join(''), fd => {
+      js.forEach(j => { const n = fd.get('n_' + j.id); j.nilai = n === '' ? null : Math.min(100, Math.max(0, +n)); j.catatan = fd.get('c_' + j.id); });
+      save(); render(); toast('Nilai disimpan');
+    }, {wide:true, label:'Simpan nilai'});
+  },
+
+  /* kuis */
+  'kuis-add': () => ACT['kuis-edit'](null),
+  'kuis-edit': id => {
+    const k = db.kuis.find(x => x.id === id) || {};
+    modal(id ? 'Ubah Kuis' : 'Tambah Kuis',
+      field('Judul', 'judul', k.judul || '', 'text', 'required placeholder="Kuis 2 - Jenis Akun"') + field('Durasi (menit)', 'durasi', k.durasi || 10, 'number', 'min="1" required') +
+      area('Soal pilihan ganda', 'soal', k ? kuisToText(k.soal || []) : '', 'Format satu soal per baris: Pertanyaan | opsi A | opsi B | opsi C | opsi D | kunci (A/B/C/D)', 'required rows="8"'),
+      fd => {
+        const soal = parseKuis(fd.get('soal'));
+        if (!soal.length) { alert('Format soal belum benar. Contoh:\nApa kepanjangan SMK? | Sekolah Menengah Kejuruan | Sekolah Mandiri | Sekolah Kerja | Sekolah Kota | A'); return false; }
+        const o = {judul:fd.get('judul'), durasi:+fd.get('durasi'), soal};
+        if (id) { Object.assign(k, o); } else db.kuis.push({id:uid(), ...o});
+        save(); render(); toast('Kuis disimpan');
+      }, {wide:true});
+  },
+  'kuis-del': id => { if (confirm('Hapus kuis beserta hasilnya?')) { db.kuis = db.kuis.filter(x => x.id !== id); db.hasilKuis = db.hasilKuis.filter(h => h.kuisId !== id); save(); render(); } },
+  'kuis-mulai': id => {
+    const k = db.kuis.find(x => x.id === id);
+    modal(k.judul, `<p class="muted">Kuis hanya bisa dikerjakan satu kali. Durasi: ${k.durasi} menit.</p>` +
+      k.soal.map((s, i) => `<div class="q"><b>${i + 1}. ${esc(s.q)}</b>${s.opts.map((o, x) => o ? `<label class="opt"><input type="radio" name="q${i}" value="${x}" required> ${'ABCD'[x]}. ${esc(o)}</label>` : '').join('')}</div>`).join(''),
+      fd => {
+        let benar = 0; k.soal.forEach((s, i) => { if (+fd.get('q' + i) === s.a) benar++; });
+        const nilai = Math.round(benar / k.soal.length * 100);
+        db.hasilKuis.push({id:uid(), kuisId:id, siswaId:me.id, nilai, benar, total:k.soal.length, jwb:k.soal.map((_, i) => +fd.get('q' + i)), tgl:today()});
+        save(); render(); alert(`Kuis selesai!\nBenar ${benar} dari ${k.soal.length} soal.\nNilai kamu: ${nilai}`);
+      }, {wide:true, label:'Kumpulkan kuis'});
+  },
+
+  /* siswa */
+  'siswa-add': () => ACT['siswa-edit'](null),
+  'siswa-edit': id => {
+    const s = db.users.find(x => x.id === id) || {};
+    modal(id ? 'Ubah Data Siswa' : 'Tambah Siswa',
+      field('Nama lengkap', 'nama', s.nama || '', 'text', 'required') + field('NIS', 'nis', s.nis || '', 'text', 'required') + field('Kelas', 'kelas', s.kelas || 'X Akuntansi 1', 'text', 'required') +
+      field('Username', 'username', s.username || '', 'text', 'required') + field('Password', 'password', s.password || 'siswa123', 'text', 'required'),
+      fd => {
+        const un = fd.get('username').trim();
+        if (db.users.some(u => u.username === un && u.id !== id)) { alert('Username sudah dipakai.'); return false; }
+        const o = {nama:fd.get('nama'), nis:fd.get('nis'), kelas:fd.get('kelas'), username:un, password:fd.get('password')};
+        if (id) Object.assign(s, o); else db.users.push({id:uid(), role:'siswa', email:'', ...o});
+        save(); render(); toast('Data siswa disimpan');
+      });
+  },
+  'siswa-del': id => { if (confirm('Hapus siswa ini beserta nilainya?')) { db.users = db.users.filter(x => x.id !== id); db.jawabanLkpd = db.jawabanLkpd.filter(j => j.siswaId !== id); db.hasilKuis = db.hasilKuis.filter(h => h.siswaId !== id); save(); render(); } },
+
+  /* pengumuman */
+  'ann-add': () => ACT['ann-edit'](null),
+  'ann-edit': id => {
+    const p = db.pengumuman.find(x => x.id === id) || {};
+    modal(id ? 'Ubah Pengumuman' : 'Buat Pengumuman', field('Judul', 'judul', p.judul || '', 'text', 'required') + area('Isi pengumuman', 'isi', p.isi || '', '', 'required rows="5"'),
+      fd => {
+        const o = {judul:fd.get('judul'), isi:fd.get('isi')};
+        if (id) Object.assign(p, o); else db.pengumuman.push({id:uid(), tgl:today(), penulis:me.nama, ...o});
+        save(); render(); toast('Pengumuman disimpan');
+      });
+  },
+  'ann-del': id => { if (confirm('Hapus pengumuman ini?')) { db.pengumuman = db.pengumuman.filter(x => x.id !== id); save(); render(); } },
+
+  /* profil */
+  'profil-edit': () => modal('Ubah Profil',
+    field('Nama', 'nama', me.nama, 'text', 'required') + (me.role === 'siswa' ? field('NIS (opsional)', 'nis', me.nis === '-' ? '' : me.nis) + field('Kelas', 'kelas', me.kelas, 'text', 'required') : '') + field('Email', 'email', me.email || '', 'email') +
+    field('Password baru', 'password', '', 'password', 'placeholder="Kosongkan jika tidak diganti" autocomplete="new-password"'),
+    fd => {
+      me.nama = fd.get('nama'); me.email = fd.get('email');
+      if (me.role === 'siswa') { me.nis = fd.get('nis').trim() || '-'; me.kelas = fd.get('kelas').trim() || me.kelas; }
+      if (fd.get('password')) me.password = fd.get('password');
+      save(); showApp(); page = 'profil'; render(); toast('Profil diperbarui');
+    }),
+
+  /* ekspor */
+  'export-csv': () => {
+    const cols = ['Nama', 'NIS', ...db.lkpd.map(l => l.judul), ...db.kuis.map(k => k.judul), 'Rata-rata'];
+    const lines = [cols, ...siswaList().map(s => { const it = itemsNilaiSiswa(s.id); return [s.nama, s.nis, ...db.lkpd.map(l => nilaiLkpd(l.id, s.id) ?? ''), ...db.kuis.map(k => nilaiKuis(k.id, s.id) ?? ''), it.length ? avg(it.map(i => i.value)).toFixed(1) : '']; })];
+    const csv = lines.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], {type:'text/csv'}));
+    a.download = 'rekap-nilai-akuntansi.csv'; a.click();
+  }
+};
+
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]');
+  if (b && ACT[b.dataset.act]) ACT[b.dataset.act](b.dataset.id);
+  if (e.target.id === 'modal') closeModal();
+});
+
+/* ---------- mulai ---------- */
+const sid = LS.getItem(SKEY);
+me = db.users.find(u => u.id === sid) || null;
+me ? showApp() : showLogin();
+
+})();
+</script>
+</body>
+</html>
